@@ -27,9 +27,14 @@ io.on('connection', socket => {
         //roomId방에 참여
         socket.join(roomId)
         //나를 제외한 그룹내 모두에게
-        socket.broadcast.to(roomId).emit('user-connected', userId)
-    })
+        socket.to(roomId).emit('user-connected', userId)
 
+        //방을 나갈 때
+        socket.on('disconnect', () =>{
+            //방 나간 유저의 id를 얻을 수 있음
+            socket.to(roomId).emit('user-disconnected', userId)
+        })
+    })
 })
 
 server.listen(3000)
