@@ -60,8 +60,13 @@ app.get('/', isLogin, function(req, res){
     res.redirect(`/${uuidV4( )}`)
 })
 
+// preview 추가하자
+app.get('/preview', isLogin, function(req, res){
+    res.render('preview')
+})
+
 //동적페이지. room.ejs로 렌더링. room.ejs에서 roomId라는 변수 사용가능
-app.get('/:room', function(req, res){
+app.get('/:room', isLogin, function(req, res){
 
     res.render('room', {roomId: req.params.room, username : req.user.displayName})
 })
@@ -69,12 +74,12 @@ app.get('/:room', function(req, res){
 
 
 app.get('/auth/google', passport.authenticate('google',
- { scope: /*['https://www.googleapis.com/auth/plus.login']*/['profile', 'email'] }));
+ { scope: ['profile', 'email'] }));
 
  app.get('/auth/google/callback',
     passport.authenticate('google', {failureRedirect:'/main'}),
     function(req, res){
-        res.redirect('/');
+        res.redirect('/preview');
  })
 
 
@@ -82,10 +87,12 @@ app.get('/auth/google', passport.authenticate('google',
 
 //연결이 되면 join room 이벤트 발생. roomid, userid를 패스함
 io.on('connection', socket => {
+    socket.on('preview', function(){
+
+    })
     //서버에서 보낼 이벤트명
     socket.on('join-room', function(roomId, userId){
         //roomId방에 참여
-        socket.join(roomId)
         //나를 제외한 그룹내 모두에게
         socket.to(roomId).emit('user-connected', userId)
 

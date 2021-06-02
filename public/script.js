@@ -7,16 +7,19 @@ const myPeer = new Peer(undefined, {
 })
 
 const myVideo = document.createElement('video')
+//내목소리는 나한테 안들리게 해야지
 myVideo.muted = true
 
 //방을 나갈 때 즉각적으로 화면 없앰을 처리하기 위해
 const peers={}
 navigator.mediaDevices.getUserMedia({
+    //다른 사람에게 video, audio 다 보내려면 다 true
     video: true,
-    audio: true
+    audio: true//*********나중에 이거 false하면 될듯!!!*********
 }).then(stream =>{//stream = video, audio
     addVideoStream(myVideo, stream)
-    
+    //위까지가 나만 나오는 경우
+
     //누군가 call하고자 하면 (receive call하는 절차)
     myPeer.on('call', call => {
         //응답하면서 현재 내 stream을 보냄
@@ -78,6 +81,7 @@ function connectToNewUser(userId, stream){
 }
 
 function addVideoStream(video, stream){
+    //내 비디오를 나한테서 틀 수 있게함 
     video.srcObject=stream
     video.addEventListener('loadedmetadata', ()=>{
         video.play()
