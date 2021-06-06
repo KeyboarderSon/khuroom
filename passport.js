@@ -1,6 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const secret = require('./secret.json');
+//const secret = require('./secret.json');
 
 //userid를 세션에 저장 req.user로 저장됨
 passport.serializeUser(function(user, done) {
@@ -22,9 +22,10 @@ passport.deserializeUser(function(user, done) {
 //   profile), and invoke a callback with a user object.
 
 passport.use(new GoogleStrategy({
-    clientID: secret.clientID,
-    clientSecret: secret.clientSecret,
-    callbackURL: "http://localhost:3000/auth/google/callback"
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    //callbackURL: "http://localhost:3000/auth/google/callback"
+    callbackURL: "https://khuroom.herokuapp.com/auth/google/callback"
   },
 
   function(accessToken, refreshToken, profile, done) {
