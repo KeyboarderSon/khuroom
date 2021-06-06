@@ -2,10 +2,11 @@ const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
 //파라미터 첫번째가 고유 id 이는 서버가 만들어내도록 undefined라고.
 const myPeer = new Peer(undefined, {
+    path:'/peerjs',
     host:'/',
-    port: '3001',
+    port: '3000',
 })
-
+let myVideoStream;
 const myVideo = document.createElement('video')
 //내목소리는 나한테 안들리게 해야지
 myVideo.muted = true
@@ -17,6 +18,7 @@ navigator.mediaDevices.getUserMedia({
     video: true,
     audio: true//*********나중에 이거 false하면 될듯!!!*********
 }).then(stream =>{//stream = video, audio
+    myVideoStream=stream;
     addVideoStream(myVideo, stream)
     //위까지가 나만 나오는 경우
 
@@ -87,6 +89,15 @@ function addVideoStream(video, stream){
         video.play()
     })
     videoGrid.append(video)
+}
+
+const CamOnOff = function(){
+    let enabled = myVideoStream.getVideoTracks()[0].enabled;
+    if (enabled){
+        myVideoStream.getVideoTracks()[0].enabled=false;
+    } else{
+        myVideoStream.getVideoTracks()[0].enabled = true;
+    }
 }
 
 //cmd창에 peerjs --port 3001
