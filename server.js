@@ -39,6 +39,17 @@ const isLogin = function(req, res, next ){
     }
 }
 
+const CopyLink = function(req, res, next ){
+    if (req.user){
+        next()
+    } else{
+        res.redirect('/auth/google')
+        
+
+    }
+}
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -67,7 +78,7 @@ app.get('/preview', isLogin, function(req, res){
 
 // 동적페이지. room.ejs로 렌더링. 
 // room.ejs에서 roomId, username 변수 사용가능
-app.get('/:room', isLogin, function(req, res){
+app.get('/:room', CopyLink, function(req, res){
 
     res.render('room', {roomId: req.params.room, username : req.user.displayName})
 })
