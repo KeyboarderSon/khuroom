@@ -16,7 +16,7 @@ const peers={}
 navigator.mediaDevices.getUserMedia({
     //다른 사람에게 video, audio 다 보내려면 다 true
     video: true,
-    audio: true//*********나중에 이거 false하면 될듯!!!*********
+    audio: false
 }).then(stream =>{//stream = video, audio
     myVideoStream=stream;
     addVideoStream(myVideo, stream)
