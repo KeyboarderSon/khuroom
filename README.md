@@ -1,6 +1,8 @@
 ## KHUROOM
 > WebRTC를 이용한 화상스터디룸  
 
+![image](https://user-images.githubusercontent.com/70938355/123059120-6d353400-d444-11eb-8831-35aac5f424f2.jpg)
+
 
 ### Getting Started
 
